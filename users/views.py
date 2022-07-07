@@ -77,6 +77,5 @@ class varifyOTP(APIView):
             if user.otp != otp:
                 return Response({'message': "Wrong OTP "}, status=status.HTTP_400_BAD_REQUEST)
             user.is_verified = True
-            user.is_active = True
             user.save()
             return Response({'message': "Email verified successfully"}, status=status.HTTP_200_OK)
