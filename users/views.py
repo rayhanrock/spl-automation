@@ -26,6 +26,7 @@ class TeacherListView(generics.ListAPIView):
 class TeacherRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     lookup_field = 'username'
     queryset = models.UserProfile.objects.filter(is_teacher=True)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     serializer_class = serializers.TeacherRetrieveUpdateSerializers
 
@@ -43,6 +44,7 @@ class StudentListView(generics.ListAPIView):
 class StudentRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     lookup_field = 'username'
     queryset = models.UserProfile.objects.filter(is_student=True)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     serializer_class = serializers.StudentRetrieveUpdateSerializers
 
@@ -56,8 +58,7 @@ class UserLoginApiView(ObtainAuthToken):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         if not user.is_verified:
-            return Response({'message': "Email is not verified",'token': token.key }, status=status.HTTP_200_OK)
-
+            return Response({'message': "Email is not verified", 'token': token.key}, status=status.HTTP_200_OK)
 
         return Response({'token': token.key})
 
@@ -79,3 +80,4 @@ class varifyOTP(APIView):
             user.is_verified = True
             user.save()
             return Response({'message': "Email verified successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

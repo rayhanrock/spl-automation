@@ -287,5 +287,5 @@ class StudentRetrieveUpdateSerializers(serializers.ModelSerializer):
 
 
 class VerifyEmailSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    otp = serializers.CharField(max_length=8)
+    email = serializers.EmailField(required=True)
+    otp = serializers.CharField(max_length=8,required=True)
