@@ -19,5 +19,6 @@ from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/',include('users.urls', namespace='users')),
+    path('api/users/',include('users.urls', namespace='users')),
+    path('api/spl-manager/',include('splManager.urls', namespace='splManager')),
 ]
